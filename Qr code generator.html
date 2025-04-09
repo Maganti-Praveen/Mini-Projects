@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR code generator</title>
+    <style>
+        h1 {
+            color: rgb(163, 204, 86);
+        }
+        .main {
+            position: relative;
+            top: 80px;
+            left: 30%;
+            border: 2px solid black;
+            height: 400px;
+            width: 500px;
+        }
+        .section-1 {
+            font-size: 20px;
+            display: flex;
+            padding-top: 20px;
+            justify-content: space-around;
+        }
+        #textinput {
+            font-size: 20px;
+            border-radius: 6px;
+        }
+        #generatebtn {
+            font-size: 20px;
+            border-radius: 6px;
+            background: linear-gradient(60deg,rgb(189, 219, 189),yellow);
+            cursor: pointer;
+        }
+        .section-2 {
+            display: flex;
+            justify-content: center;
+            margin-top: 20%;
+        }
+        #qrimage {
+            height: 200px;
+            width: 200px;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <h1>QR code generator</h1>
+        
+    </center>
+    <div class="main">
+            <div class="section-1">
+                <input id="inpurl" type="text" placeholder="Enter text">
+                <button id="generatebtn" type="button" onclick="generateQR()">Generate</button>
+            </div>
+            <div class="section-2">
+                <img id="qrimage" src="" alt="qrimage">
+            </div>
+        </div>
+        <script>
+    async function generateQR() {
+    
+    let data = document.getElementById("inpurl").value;
+
+    let response=await fetch(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data)}`);
+    
+    let blob=await response.blob();
+
+    let imageurl=URL.createObjectURL(blob);
+
+    document.getElementById("qrimage").src=imageurl;
+}
+        </script>
+</body>
+</html>

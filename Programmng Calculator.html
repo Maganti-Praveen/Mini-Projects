@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task-2</title>
+    <style>
+        body {
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #displaybox {
+            background-color: rgb(190, 218, 242);
+            border: 6px solid rgb(255, 255, 255);
+            border-radius: 10px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            width: 80%;
+            justify-content: center;
+            text-align: center;
+            height: 3rem;
+            margin-bottom: 2rem;
+        }
+        #input {
+            background-color:rgb(242, 235, 235) ;
+            border: 6px solid rgb(255, 255, 255);
+            border-radius: 10px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+            height: 3rem;
+            margin-bottom: 2rem;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 0.5rem;
+            width: 80%;
+        }
+        .btn {
+            height: 3rem;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+            font-style: italic;
+            font-size: 0.8rem;
+            color:chocolate;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            transition: 1s;
+            border-radius: 20px;
+        }
+        .btn:hover {
+            color: white;
+            background-color: cadetblue;
+        }
+        .table {
+            background-color: rgb(255, 187, 98);
+            justify-items: center;
+            border-radius: 15px;
+            box-shadow: 15px black;
+            width: 30%;
+            height: 70%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="table">
+        <h3 id="displaybox"></h3>
+    <input type="number" id="input" placeholder="Enter a number!">
+    
+    
+    <div class="buttons">
+        <button class="btn" onclick="isPalindrome()">Palindrome</button>
+        <button class="btn" onclick="isArmstrong()">Armstrong</button>
+        <button class="btn" onclick="isPrime()">Prime</button>
+        <button class="btn" onclick="Factorial()">Factorial</button>
+        <button class="btn" onclick="isPerfectNumber()">Perfect Number</button>
+        <button class="btn" onclick="isEvenOrOdd()">Even/Odd</button>
+    </div>
+    </div>
+    
+    <script>
+        
+        value=parseInt(value)
+        function displayfun(text) {
+            document.getElementById('displaybox').innerText=text;
+        }
+        function isEvenOrOdd() {
+            var value = document.getElementById('input').value
+            if (value%2 ===0) {
+                displayfun(value+" is Even");
+            }
+            else {
+                displayfun(value+" is Odd");
+            }
+        }
+        function isPalindrome() {
+            var value = document.getElementById('input').value
+            var temp=parseInt(value);
+            let r=0,d=0;
+            while(temp>0) 
+            {
+                d=temp%10;
+                r=r*10+d;
+                temp=Math.floor(temp/10);
+            }
+            if (r==value) {
+                displayfun(value+" is a palindrome!");
+            }
+            else {
+                displayfun(value+" is not a palindrome!");
+            }
+        }
+        function isPrime() {
+            var value = document.getElementById('input').value
+            var c=0;
+            for(let i=0; i<value+1; i++) {
+                if (value%i==0) {
+                    c+=1
+                }
+                if (c==2) {
+                    displayfun(value+" is a prime!");
+                }
+                else {
+                    displayfun(value+" is not a prime!");
+                }
+            }
+        }
+        function Factorial() {
+            var value = document.getElementById('input').value
+            function fact(n) {
+                if ((n==1) || (n==0)) {
+                    return 1;
+                }
+                else {
+                    return n*fact(n-1);
+                }
+            }
+            displayfun("Factorial of "+value+" is: "+fact(value))
+        }
+        function isArmstrong() {
+            var value = document.getElementById('input').value
+            var temp=parseInt(value);
+            let r=0,d=0;
+            while(temp>0) 
+            {
+                d=temp%10;
+                r+=d**3;
+                temp=Math.floor(temp/10);
+            }
+            if (r==value) {
+                displayfun(value+" is a armstrong number!");
+            }
+            else {
+                displayfun(value+" is not a armstrong number!");
+            }
+        }
+        function isPerfectNumber() {
+            var value = document.getElementById('input').value
+            var s=0;
+            for(let i=0; i<value; i++) {
+                if (value%i==0) {
+                    s+=i
+                }
+                if (s==value) {
+                    displayfun(value+" is a perfect number!");
+                }
+                else {
+                    displayfun(value+" is not a perfect number!");
+                }
+            }
+        }
+    </script>
+</body>
+</html>

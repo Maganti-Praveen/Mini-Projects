@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Translator</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f4f4f4;
+        }
+        .container {
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            width: 500px;
+            padding: 20px;
+            background: white;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: transparent;
+            background: linear-gradient(40deg, rgb(164, 0, 223), rgb(40, 212, 210));
+            background-clip: text;
+        }
+        .translation-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        textarea {
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: none;
+            height: 100px;
+        }
+        .translated-text {
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 18px;
+            background: #e8f5e9;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgb(129, 196, 30);
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .swap {
+            font-size: 20px;
+            cursor: pointer;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            background: #b78fb7;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            color: rgb(48, 48, 41);
+            background: #e0d3e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Language Translator</h2>
+        <div class="translation-box">
+            <textarea id="text" placeholder="Enter text"></textarea>
+            <p class="translated-text" id="result">Translation</p>
+        </div>
+        
+        <div class="controls">
+            <select id="from">
+                <option value="en">English</option>
+                <option value="te">Telugu</option>
+                <option value="ta">Tamil</option>
+                <option value="kn">Kannada</option>
+                <option value="ml">Malayalam</option>
+                <option value="hi">Hindi</option>
+                <option value="ar">Arabic</option>
+                <option value="zh">Chinese</option>
+                <option value="ru">Russian</option>
+            </select>
+            <span class="swap" onclick="swapLanguages()">⇄</span>
+            <select id="to">
+                <option value="te">Telugu</option>
+                <option value="ta">Tamil</option>
+                <option value="kn">Kannada</option>
+                <option value="ml">Malayalam</option>
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="ar">Arabic</option>
+                <option value="zh">Chinese</option>
+                <option value="ru">Russian</option>
+            </select>
+        </div>
+
+        <button onclick="translateText()">Translate</button>
+    </div>
+
+    <script>
+        async function translateText() {
+            let text = document.getElementById("text").value;
+            let from = document.getElementById("from").value;
+            let to = document.getElementById("to").value;
+            let result = document.getElementById("result");
+
+            if (!text.trim()) {
+                result.innerText = "Please enter text to translate!";
+                return;
+            }
+
+            result.innerText = "Translating...";
+
+            let url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`;
+
+            try {
+                let response = await fetch(url);
+                let data = await response.json();
+                let translatedText = data.responseData.translatedText;
+                if (!translatedText && data.matches.length > 0) {
+                    translatedText = data.matches[0].translation || "No translation found!";
+                }
+                setTimeout(() => {
+                    result.innerText = translatedText;
+                }, 1000);
+            } catch (error) {
+                result.innerText = "Error fetching translation!";
+                console.error(error);
+            }
+        }
+
+        function swapLanguages() {
+            let from = document.getElementById("from");
+            let to = document.getElementById("to");
+            [from.value, to.value] = [to.value, from.value];
+            let text = document.getElementById("text").value;
+            if (text) {
+                translateText();
+            }
+        }
+    </script>
+</body>
+</html>
